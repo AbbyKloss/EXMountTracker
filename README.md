@@ -25,7 +25,8 @@ there are also hidden commands but those are just for the person hosting the bot
   - discord
 
 ## TODO:
-- include savage and other trial mounts
+- include savage and other trial mounts (under 'other' column?)
+- remove GuildID column from database, it's not being used
 
 ## Recent Edits
 (9/26/2021)
