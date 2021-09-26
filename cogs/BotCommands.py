@@ -253,9 +253,7 @@ note: 0 is no, 1 is yes```'''
                 reply += "\n"
                 async for member in ctx.guild.fetch_members(limit=150):
                     for row in cur.execute("select " + mount + " from Users where userID=?", (int(member.id), )):
-                        reply += " " + str(member.name)
-                        for i in range(15 - len(member.name)):
-                            reply += " "
+                        reply += checkString(member.name)
                         reply +=  "| " + str(row[0]) + "\n"
                 reply += "```"
 
