@@ -43,6 +43,7 @@ extensionList = [
 
 @bot.event
 async def on_ready():
+    await bot.change_presence(activity=discord.Game("FINAL FANTASY XIV"))
     print(f'{bot.user} is connected to the following guild(s):\n')
     for guild in bot.guilds:
         print(f'{guild.name} (id: {guild.id})')
