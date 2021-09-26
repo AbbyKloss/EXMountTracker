@@ -36,5 +36,9 @@ note: not case sensitive```'''
         else:
             await ctx.reply("No prefix entered", mention_author=False)
 
+    @commands.command(name='invite', help="invite me to another server")
+    async def invite(self, ctx):
+        await ctx.reply("Here's the link:\nhttps://discord.com/oauth2/authorize?client_id=891445253092036680&permissions=264192&scope=bot%20applications.commands", mention_author=False)
+
 def setup(bot):
     bot.add_cog(Info(bot))
