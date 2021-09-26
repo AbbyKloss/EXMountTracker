@@ -37,7 +37,8 @@ bot = commands.Bot(command_prefix=(get_prefix), case_insensitive=True, owner_id=
 # startup
 extensionList = [
                 'cogs.BotCommands',
-                'cogs.Owner'
+                'cogs.Owner',
+                'cogs.Info'
                 ]
 
 @bot.event

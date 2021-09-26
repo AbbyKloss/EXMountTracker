@@ -11,7 +11,7 @@ HWList  = ["HWDe", "HWSo", "HWDa", "HWWa", "HWRn", "HWRs", "HWWh"]
 SBList  = ["SBHa", "SBEu", "SBLu", "SBAu", "SBLe", "SBRe", "SBBl"]
 ShBList = ["ShBD", "ShBE", "ShBL", "ShBR", "ShBS", "ShBI", "ShBF"]
 
-ARRRead = [" Boreas    ", "Markab     ", "Enbarr     ", "Gullfaxi   ", "Xanthos    ", "Aithon     ", " Nightmare "]
+ARRRead = [" Boreas    ", " Markab    ", " Enbarr    ", " Gullfaxi  ", " Xanthos   ", " Aithon    ", " Nightmare "]
 HWRead  = [" Demonic   ", " Sophic    ", " Dark      ", " Warring   ", " Round     ", " Rose      ", " White     "]
 SBRead  = [" Hallowed  ", " Euphonius ", " Lunar     ", " Auspicious", " Legendary ", " Reveling  ", " Blissful  "]
 ShBRead = [" Diamond   ", " Emerald   ", " Light     ", " Ruby      ", " Shadow    ", " Innocent  ", " Fae       "]
@@ -104,10 +104,10 @@ def checkName(string):
     output = ""
     if (len(string) <= 15):
         output = string
-        for i in range(14 - len(string)):
+        for i in range(15 - len(string)):
             output += " "
     else:
-        output = output[:12] + "..."
+        output = string[:12] + "..."
 
     return output
 
@@ -247,31 +247,71 @@ note: 0 is no, 1 is yes```'''
                 reply = "Not working"
 
             elif (mount == "ARR"):
-                reply += "``` Name           |"
+                reply += "```Name           "
                 for item in ARRRead:
-                    reply += item
+                    reply += "|" + item
                 reply += "\n"
                 async for member in ctx.guild.fetch_members(limit=150):
-                    for row in cur.execute("select " + mount + " from Users where userID=?", (int(member.id), )):
-                        reply += checkString(member.name)
-                        reply +=  "| " + str(row[0]) + "\n"
+                    cur.execute("select exists(select UserID from Users where userID=?)", (member.id, ))
+                    if (cur.fetchone()[0]):
+                        reply += checkName(member.display_name)
+                        for item in ARRList:
+                            for row in cur.execute("select " + item + " from Users where userID=?", (int(member.id), )):
+                                reply +=  "| " + str(row[0]) + "         "
+                        reply += '\n'
                 reply += "```"
 
             elif (mount == "HW"):
-                print(2)
+                reply += "```Name           "
+                for item in HWRead:
+                    reply += "|" + item
+                reply += "\n"
+                async for member in ctx.guild.fetch_members(limit=150):
+                    cur.execute("select exists(select UserID from Users where userID=?)", (member.id, ))
+                    if (cur.fetchone()[0]):
+                        reply += checkName(member.display_name)
+                        for item in HWList:
+                            for row in cur.execute("select " + item + " from Users where userID=?", (int(member.id), )):
+                                reply +=  "| " + str(row[0]) + "         "
+                        reply += '\n'
+                reply += "```"
 
             elif (mount == "SB"):
-                print(3)
+                reply += "```Name           "
+                for item in SBRead:
+                    reply += "|" + item
+                reply += "\n"
+                async for member in ctx.guild.fetch_members(limit=150):
+                    cur.execute("select exists(select UserID from Users where userID=?)", (member.id, ))
+                    if (cur.fetchone()[0]):
+                        reply += checkName(member.display_name)
+                        for item in SBList:
+                            for row in cur.execute("select " + item + " from Users where userID=?", (int(member.id), )):
+                                reply +=  "| " + str(row[0]) + "         "
+                        reply += '\n'
+                reply += "```"
             
-            elif (mount == "SHB"):
-                print(4)
+            elif (mount == "ShB"):
+                reply += "```Name           "
+                for item in ShBRead:
+                    reply += "|" + item
+                reply += "\n"
+                async for member in ctx.guild.fetch_members(limit=150):
+                    cur.execute("select exists(select UserID from Users where userID=?)", (member.id, ))
+                    if (cur.fetchone()[0]):
+                        reply += checkName(member.display_name)
+                        for item in ShBList:
+                            for row in cur.execute("select " + item + " from Users where userID=?", (int(member.id), )):
+                                reply +=  "| " + str(row[0]) + "         "
+                        reply += '\n'
+                reply += "```"
             
             else:
                 reply += "``` Name           | " + mount + "\n"
                 async for member in ctx.guild.fetch_members(limit=150):
                     for row in cur.execute("select " + mount + " from Users where userID=?", (int(member.id), )):
-                        reply += " " + str(member.name)
-                        for i in range(15 - len(member.name)):
+                        reply += " " + str(member.display_name)
+                        for i in range(15 - len(member.display_name)):
                             reply += " "
                         reply +=  "| " + str(row[0]) + "\n"
                 reply += "```"

@@ -1,5 +1,5 @@
+from discord.ext.commands.core import has_permissions
 from discord.ext import commands
-from random import choice
 import sqlite3
 
 class Info(commands.Cog, description="basic info"):
@@ -22,6 +22,19 @@ ___________|______|__________|______|___________|______|__________|_______
 
 note: not case sensitive```'''
         await ctx.reply(string, mention_author=False)
+
+    @commands.command(name='prefix', help='change the prefix (ADMIN)', usage="<prefix>")
+    @has_permissions(administrator=True)
+    async def prefix(self, ctx, *args):
+        if (args):
+            con = sqlite3.connect('files/EXMountTracker.db')
+            prefix = str(args[0][:5])
+            con.cursor().execute("update Guilds set Prefix=? where GuildID=?", (prefix, int(ctx.guild.id), ))
+            con.commit()
+            con.close()
+            await ctx.reply("Prefix changed to: `" + prefix + "`", mention_author=False)
+        else:
+            await ctx.reply("No prefix entered", mention_author=False)
 
 def setup(bot):
     bot.add_cog(Info(bot))
