@@ -41,7 +41,7 @@ note: not case sensitive```'''
     async def invite(self, ctx):
         await ctx.reply("Here's the link:\nhttps://discord.com/oauth2/authorize?client_id=891445253092036680&permissions=264192&scope=bot%20applications.commands", mention_author=False)
 
-    @commands.command(name='embedPages', help='proto-help')
+    @commands.command(name='embedPages', help='proto-help', hidden=True)
     async def embedPages(self, ctx):
         page1 = discord.Embed (
         title = 'Page 1/3',

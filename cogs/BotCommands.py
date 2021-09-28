@@ -319,11 +319,11 @@ note: 0 is no, 1 is yes```'''
         
         await ctx.reply(reply, mention_author=False)'''
 
-    @commands.command(name='hasMounts', help='help')
+    @commands.command(name='hasMounts', help="checks who, in the server, has specific mount or an expac's mounts", usage="<mount name | expac>")
     async def has_mounts(self, ctx, *args):
         if (len(args) == 1):
             embed=discord.Embed(title="Server Mounts", color=ctx.author.color)
-            embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+            embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
             embed.set_footer(text="note: 0 is no, 1 is yes")
             length = 7
 
@@ -352,7 +352,7 @@ note: 0 is no, 1 is yes```'''
                         reply += '\n'
 
             elif (mount == "HW"):
-                reply += "```Name           "
+                reply += "```Name" + (" " * (length-4))
                 for item in HWList:
                     reply += "|" + item
                 reply += "\n"
@@ -366,7 +366,7 @@ note: 0 is no, 1 is yes```'''
                         reply += '\n'
 
             elif (mount == "SB"):
-                reply += "```Name           "
+                reply += "```Name" + (" " * (length-4))
                 for item in SBList:
                     reply += "|" + item
                 reply += "\n"
@@ -380,7 +380,7 @@ note: 0 is no, 1 is yes```'''
                         reply += '\n'
             
             elif (mount == "ShB"):
-                reply += "```Name           "
+                reply += "```Name" + (" " * (length-4))
                 for item in ShBList:
                     reply += "|" + item
                 reply += "\n"
