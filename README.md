@@ -27,7 +27,11 @@ there are also hidden commands but those are just for the person hosting the bot
 ## TODO:
 - include savage and other trial mounts (under 'other' column?)
 - remove GuildID column from database, it's not being used
+- revamp the whole method of checking what mount is being asked, it's horribly done
 
 ## Recent Edits
+(1/13/2022)
+- updated for Endwalker's release
+- added Lynx of Divine Light and Lynx of Eternal Darkness
 (9/26/2021)
 - making it

@@ -9,17 +9,17 @@ class Info(commands.Cog, description="basic info"):
 
     @commands.command(name='table', help='shows how we represent the mounts by name')
     async def table(self, ctx):
-        string = '''```      ARR     |     HW     |      SB       |     ShB     
-_________|____|_______|____|__________|____|________|____
-  Word   | DB |  Word | DB |  Word    | DB |  Word  | DB 
-_________|____|_______|____|__________|____|________|____
-Boreas   |ARRB|Demonic|HWDe|Hallowed  |SBHa|Diamond |ShBD
-Markab   |ARRM|Sophic |HWDo|Euphonius |SBEu|Emerald |ShBE
-Enbarr   |ARRE|Dark   |HWDa|Lunar     |SBLu|Light   |ShBL
-Gullfaxi |ARRG|Warring|HWWa|Auspicious|SBAu|Ruby    |ShBR
-Xanthos  |ARRX|Round  |HWRn|Legendary |SBLe|Shadow  |ShBS
-Aithon   |ARRA|Rose   |HWRo|Reveling  |SBRe|Innocent|ShBI
-Nightmare|ARRN|White  |HWWh|Blissful  |SBBl|Fae     |ShBF
+        string = '''```      ARR     |     HW     |      SB       |     ShB     |     EnW     
+_________|____|_______|____|__________|____|________|____|_______|____|
+  Word   | DB |  Word | DB |  Word    | DB |  Word  | DB |  Word | DB |
+_________|____|_______|____|__________|____|________|____|_______|____|
+Boreas   |ARRB|Demonic|HWDe|Hallowed  |SBHa|Diamond |ShBD|Eternal|EnwE|
+Markab   |ARRM|Sophic |HWDo|Euphonius |SBEu|Emerald |ShBE|Divine |EnwD|
+Enbarr   |ARRE|Dark   |HWDa|Lunar     |SBLu|Light   |ShBL|
+Gullfaxi |ARRG|Warring|HWWa|Auspicious|SBAu|Ruby    |ShBR|
+Xanthos  |ARRX|Round  |HWRn|Legendary |SBLe|Shadow  |ShBS|
+Aithon   |ARRA|Rose   |HWRo|Reveling  |SBRe|Innocent|ShBI|
+Nightmare|ARRN|White  |HWWh|Blissful  |SBBl|Fae     |ShBF|
 
 note: not case sensitive```'''
         await ctx.reply(string, mention_author=False)

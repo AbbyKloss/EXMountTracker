@@ -10,15 +10,18 @@ ARRList = ["ARRB", "ARRM", "ARRE", "ARRG", "ARRX", "ARRA", "ARRN"]
 HWList  = ["HWDe", "HWSo", "HWDa", "HWWa", "HWRn", "HWRs", "HWWh"]
 SBList  = ["SBHa", "SBEu", "SBLu", "SBAu", "SBLe", "SBRe", "SBBl"]
 ShBList = ["ShBD", "ShBE", "ShBL", "ShBR", "ShBS", "ShBI", "ShBF"]
+EnWList = ["EnWD", "EnwL"]
 
 ARRRead = [" Boreas    ", " Markab    ", " Enbarr    ", " Gullfaxi  ", " Xanthos   ", " Aithon    ", " Nightmare "]
 HWRead  = [" Demonic   ", " Sophic    ", " Dark      ", " Warring   ", " Round     ", " Rose      ", " White     "]
 SBRead  = [" Hallowed  ", " Euphonius ", " Lunar     ", " Auspicious", " Legendary ", " Reveling  ", " Blissful  "]
 ShBRead = [" Diamond   ", " Emerald   ", " Light     ", " Ruby      ", " Shadow    ", " Innocent  ", " Fae       "]
+EnWRead = [" Eternal  ", " Divine    "]
 
 #checks to see if the string input equals anything expected
 #if so, outputs database column name
 #if not, outputs empty string
+#coming back to this after not seeing it for a few months, this is _awful_ code, there's gotta be a better way of doing it
 def checkString(string):
     #ARR Block
     mount = ""
@@ -85,6 +88,12 @@ def checkString(string):
     elif ((string.upper() == "SHBF") or (string.lower() == "fae")):
         mount = "ShBF"
     
+    #EnW Block
+    elif ((string.upper() == "ENWL") or (string.lower() == "divine")):
+        mount = "EnWL"
+    elif ((string.upper() == "ENWD") or (string.lower() == "eternal")):
+        mount = "EnWD"
+
     #Expac Block
     elif (string.upper() == "ARR"):
         mount = "ARR"
@@ -94,6 +103,8 @@ def checkString(string):
         mount = "SB"
     elif (string.upper() == "SHB"):
         mount = "ShB"
+    elif (string.upper() == "ENW"):
+        mount = "EnW"
     elif (string.upper() == "ALL"):
         mount = "ALL"
 
@@ -126,7 +137,7 @@ class BotCommands(commands.Cog, description="most of the commands"):
             #if there isn't a row for the user, make one
             cur.execute("select exists(select * from Users where UserID=?)", (int(ctx.author.id),))
             if (not cur.fetchone()[0]):
-                cur.execute("insert into Users values (?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)", (int(ctx.author.id), ))
+                cur.execute("insert into Users values (?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)", (int(ctx.author.id), ))
             
             #defaults for now
             mount = ""
@@ -158,6 +169,10 @@ class BotCommands(commands.Cog, description="most of the commands"):
                 for item in ShBList:
                     cur.execute("update Users set " + item + "=? where UserID=?", (set, (ctx.author.id)))
                 reply = mount + " " + str(set)
+            elif (mount == "ENW"):
+                for item in EnWList:
+                    cur.execute("update Users set " + item + "=? where UserID=?", (set, (ctx.author.id)))
+                reply = mount + " " + str(set)
             elif (mount == "ALL"):
                 for item in ARRList:
                     cur.execute("update Users set " + item + "=? where UserID=?", (set, (ctx.author.id)))
@@ -166,6 +181,8 @@ class BotCommands(commands.Cog, description="most of the commands"):
                 for item in SBList:
                     cur.execute("update Users set " + item + "=? where UserID=?", (set, (ctx.author.id)))
                 for item in ShBList:
+                    cur.execute("update Users set " + item + "=? where UserID=?", (set, (ctx.author.id)))
+                for item in EnWList:
                     cur.execute("update Users set " + item + "=? where UserID=?", (set, (ctx.author.id)))
                 reply = mount + " " + str(set)
 
@@ -217,17 +234,20 @@ class BotCommands(commands.Cog, description="most of the commands"):
             ShBI = str(row[27])
             ShBF = str(row[28])
 
-        string = '''```         ARR       |         HW        |         SB        |         ShB        
-___________|_______|___________|_______|___________|_______|___________|_______
-Mount      | Have? |   Mount   | Have? |   Mount   | Have? |   Mount   | Have?
-___________|_______|___________|_______|___________|_______|___________|_______
-Boreas     | '''+ARRB+'''     | Demonic   | '''+HWDe+'''     | Hallowed  | '''+SBHa+'''     | Diamond   | '''+ShBD+'''
-Markab     | '''+ARRM+'''     | Sophic    | '''+HWSo+'''     | Euphonius | '''+SBEu+'''     | Emerald   | '''+ShBE+'''
-Enbarr     | '''+ARRE+'''     | Dark      | '''+HWDa+'''     | Lunar     | '''+SBLu+'''     | Light     | '''+ShBL+'''
-Gullfaxi   | '''+ARRG+'''     | Warring   | '''+HWWa+'''     | Auspicious| '''+SBAu+'''     | Ruby      | '''+ShBR+'''
-Xanthos    | '''+ARRX+'''     | Round     | '''+HWRn+'''     | Legendary | '''+SBLe+'''     | Shadow    | '''+ShBS+'''
-Aithon     | '''+ARRA+'''     | Rose      | '''+HWRs+'''     | Reveling  | '''+SBRe+'''     | Innocent  | '''+ShBI+'''
-Nightmare  | '''+ARRN+'''     | White     | '''+HWWh+'''     | Blissful  | '''+SBBl+'''     | Fae       | '''+ShBF+'''
+            EnWD = str(row[29])
+            EnWL = str(row[30])
+
+        string = '''```         ARR       |         HW        |         SB        |         ShB       |         EnW       
+___________|_______|___________|_______|___________|_______|___________|_______|___________|_______|
+Mount      | Have? |   Mount   | Have? |   Mount   | Have? |   Mount   | Have? |   Mount   | Have? |
+___________|_______|___________|_______|___________|_______|___________|_______|___________|_______|
+Boreas     | '''+ARRB+'''     | Demonic   | '''+HWDe+'''     | Hallowed  | '''+SBHa+'''     | Diamond   | '''+ShBD+'''     | Eternal   | '''+EnWD+''' 
+Markab     | '''+ARRM+'''     | Sophic    | '''+HWSo+'''     | Euphonius | '''+SBEu+'''     | Emerald   | '''+ShBE+'''     | Divine    | '''+EnWL+''' 
+Enbarr     | '''+ARRE+'''     | Dark      | '''+HWDa+'''     | Lunar     | '''+SBLu+'''     | Light     | '''+ShBL+'''     |                   
+Gullfaxi   | '''+ARRG+'''     | Warring   | '''+HWWa+'''     | Auspicious| '''+SBAu+'''     | Ruby      | '''+ShBR+'''     |                   
+Xanthos    | '''+ARRX+'''     | Round     | '''+HWRn+'''     | Legendary | '''+SBLe+'''     | Shadow    | '''+ShBS+'''     |                   
+Aithon     | '''+ARRA+'''     | Rose      | '''+HWRs+'''     | Reveling  | '''+SBRe+'''     | Innocent  | '''+ShBI+'''     |                   
+Nightmare  | '''+ARRN+'''     | White     | '''+HWWh+'''     | Blissful  | '''+SBBl+'''     | Fae       | '''+ShBF+'''     |                   
 
 note: 0 is no, 1 is yes```'''
 
@@ -325,7 +345,7 @@ note: 0 is no, 1 is yes```'''
             embed=discord.Embed(title="Server Mounts", color=ctx.author.color)
             embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url)
             embed.set_footer(text="note: 0 is no, 1 is yes")
-            length = 7
+            length = 9
 
             con = sqlite3.connect('files/EXMountTracker.db')
             cur = con.cursor()
@@ -389,6 +409,20 @@ note: 0 is no, 1 is yes```'''
                     if (cur.fetchone()[0]):
                         reply += checkName(member.display_name, length)
                         for item in ShBList:
+                            for row in cur.execute("select " + item + " from Users where userID=?", (int(member.id), )):
+                                reply +=  "| " + str(row[0]) + "  "
+                        reply += '\n'
+            
+            elif (mount == "EnW"):
+                reply += "```Name" + (" " * (length-4))
+                for item in EnWList:
+                    reply += "|" + item
+                reply += "\n"
+                async for member in ctx.guild.fetch_members(limit=150):
+                    cur.execute("select exists(select UserID from Users where userID=?)", (member.id, ))
+                    if (cur.fetchone()[0]):
+                        reply += checkName(member.display_name, length)
+                        for item in EnWList:
                             for row in cur.execute("select " + item + " from Users where userID=?", (int(member.id), )):
                                 reply +=  "| " + str(row[0]) + "  "
                         reply += '\n'
